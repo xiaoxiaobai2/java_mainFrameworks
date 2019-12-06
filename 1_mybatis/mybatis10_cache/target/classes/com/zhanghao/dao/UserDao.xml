@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghao.dao.UserDao">
+
+<!--    开启缓存-->
+    <cache/>
+<!--    使用缓存-->
+    <select id="findAll" resultType="user" useCache="true">
+        select * from tab_user;
+    </select>
+
+    <select id="findById" resultType="user">
+        select * from tab_user where id=#{0};
+    </select>
+
+    <update id="update" parameterType="user">
+        update tab_user set username=#{username} where id=#{id};
+    </update>
+</mapper>

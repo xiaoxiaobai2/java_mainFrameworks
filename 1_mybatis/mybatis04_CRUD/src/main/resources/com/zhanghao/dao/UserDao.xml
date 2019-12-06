@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghao.dao.UserDao">
+
+    <select id="findAll" resultType="USER">
+        select * from user;
+    </select>
+
+    <insert id="insertUser" parameterType="com.zhanghao.domain.User">
+        <selectKey keyProperty="uid" keyColumn="uid" resultType="int" order="BEFORE">
+            select  last_insert_id();
+        </selectKey>
+        insert into user(name,age) values (#{name},#{age});
+    </insert>
+
+    <delete id="deleteById" >
+        delete from user where uid = #{id};
+    </delete>
+
+    <update id="update">
+        update user set name = #{arg0}, age = #{arg1} where uid = #{param3};
+    </update>
+
+    <select id="findById" resultType="com.zhanghao.domain.User">
+        select * from user where uid=#{0};
+    </select>
+
+</mapper>

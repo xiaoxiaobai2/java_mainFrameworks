@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghao.dao.AccountDao">
+
+    <resultMap id="accountMap" type="account">
+        <id property="id" column="aid"></id>
+        <result property="uid" column="uid"></result>
+        <result property="money" column="money"></result>
+
+<!--        一对一关系映射，配置封装到user,注意写明封装类型 javaType-->
+        <association property="user" column="uid" javaType="user">
+<!--            <id property="id" column="id"></id>-->
+            <result property="username" column="username"></result>
+            <result property="sex" column="sex"></result>
+            <result property="address" column="address"></result>
+            <result property="birthday" column="birthday"></result>
+        </association>
+
+    </resultMap>
+    <select id="findAll" resultMap="accountMap">
+        SELECT u.*,a.id aid,a.uid,a.money FROM account a,tab_user u WHERE a.uid = u.id;
+    </select>
+
+    <select id="findById" resultType="account">
+        select * from account where id=#{0};
+    </select>
+
+</mapper>

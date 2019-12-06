@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--    引用外部资源配置文件-->
+    <properties resource="jdbcConfig.properties"></properties>
+
+<!--    设置延时加载-->
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+<!--    配置别名-->
+    <typeAliases>
+<!--        给com.zhanghao.dao.UserDao配置别面  为user 不区分大小写-->
+<!--        <typeAlias type="com.zhanghao.domain.User" alias="user"></typeAlias>-->
+<!--        给整个包结构配置别名  别名就是包下面的类名 不区分大小写-->
+        <package name="com.zhanghao.domain"/>
+    </typeAliases>
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="pooled">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+<!--        给整个dao接口 所在的包   不需要在配置 mapper resource 或 class-->
+        <package name="com.zhanghao.dao"/>
+    </mappers>
+</configuration>

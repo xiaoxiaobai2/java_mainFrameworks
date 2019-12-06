@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghao.dao.UserDao">
+<!--    动态sql    if   where   each-->
+    <select id="findByName" resultType="user" >
+        select * from user
+        <where>
+            <if test="name!=null">
+                name like #{name}
+            </if>
+            <if test="uid!=null">
+                 and uid > #{uid}
+            </if>
+        </where>
+    </select>
+
+<!--    动态查询   子查询 select * from user in-->
+    <select id="findInUids" resultType="user" parameterType="queryVo">
+        select * from user
+        <where>
+            <if test="uids!=null and uids.size!=0">
+                <foreach collection="uids" open="and uid in(" close=")" item="uid" separator=",">
+                    #{uid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>
