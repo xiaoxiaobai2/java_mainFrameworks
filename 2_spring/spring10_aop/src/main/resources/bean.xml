@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="service" class="com.zhanghao.service.Impl.ServiceImpl"></bean>
+    <bean id="log" class="com.zhanghao.log.Logger"></bean>
+
+    <!--配置AOP -->
+    <aop:config>
+        <!-- 配置切入点 -->
+        <!-- 配置切入点表达式 id属性用于指定表达式的唯一标识。expression属性用于指定表达式内容
+              此标签写在aop:aspect标签内部只能当前切面使用。
+              它还可以写在aop:aspect外面，此时就变成了所有切面可用
+          -->
+        <aop:pointcut id="servicePC" expression="execution(* com.zhanghao.service.Impl.ServiceImpl.*(..))"/>
+        <!-- 配置切面 -->
+        <aop:aspect id="printLog" ref="log">
+<!--            前置-->
+                        <aop:before method="printBeforeLog" pointcut="execution(* *..*.delete(..))"></aop:before>
+
+            <!--            引入切入点-->
+<!--            后置-->
+            <aop:after-returning method="printAfterLog" pointcut-ref="servicePC"></aop:after-returning>
+
+<!--            异常-->
+                        <aop:after-throwing method="printExceptionLog" pointcut="execution(* *..*.delete(..))"></aop:after-throwing>
+
+<!--            最终-->
+                        <aop:after method="printFinallyLog" pointcut="execution(* *..*.delete(..))"></aop:after>
+
+<!--            环切-->
+<!--            <aop:around method="aroundLog" pointcut="execution(public int com..zhanghao.service.Impl.ServiceImpl.findTotal())"></aop:around>-->
+        </aop:aspect>
+    </aop:config>
+</beans>

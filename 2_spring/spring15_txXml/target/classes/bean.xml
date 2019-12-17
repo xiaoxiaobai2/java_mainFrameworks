@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+<!--    配置Service对象-->
+    <bean id="accountService" class="com.zhanghao.service.impl.AccountServiceImpl">
+        <property name="accountDao" ref="accountDao"></property>
+    </bean>
+
+    <!--    配置Dao对象-->
+    <bean id="accountDao" class="com.zhanghao.dao.impl.AccountDaoImpl">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+    <!--    配置数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!--        链接数据库必备的信息-->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/spring"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="123456"></property>
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <!-- 配置事务的通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+
+        <!-- 配置事务的属性 -->
+        <tx:attributes>
+            <!-- 配置所有方法为非只读,必须有事务的支持 -->
+            <tx:method name="*" read-only="false" propagation="REQUIRED"/>
+
+            <!-- 配置查询方法为只读，可以有事务的支持 -->
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="pc1" expression="execution(* com.zhanghao.service.impl.*.*(..))"/>
+
+
+        <!-- 绑定切入点和事务管理器 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc1"></aop:advisor>
+    </aop:config>
+
+
+</beans>

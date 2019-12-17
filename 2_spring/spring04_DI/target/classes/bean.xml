@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--
+        依赖注入
+
+       1、没有默认构造函数，需要传递初始值
+-->
+    <bean id="testBean" class="com.zhanghao.bean.TestBean">
+        <constructor-arg name="name" value="张浩"></constructor-arg>
+        <constructor-arg name="age" value="24"></constructor-arg>
+        <constructor-arg name="birthday" ref="now"></constructor-arg>
+    </bean>
+    <bean id="now" class="java.util.Date"></bean>
+
+<!--    2、使用set方法实现参数注入-->
+    <bean id="testBean2" class="com.zhanghao.bean.TestBean2">
+        <property name="name" value="张三"></property>
+        <property name="age" value="15"></property>
+        <property name="birthday" ref="now"></property>
+    </bean>
+
+<!--    3、特殊对象的参数注入  集合-->
+    <bean id="testBean3" class="com.zhanghao.bean.TestBean3">
+        <property name="array">
+            <array>
+                <value>abc</value>
+                <value>def</value>
+                <value>gjk</value>
+            </array>
+        </property>
+
+        <property name="list">
+            <array>
+                <value>abc</value>
+                <value>def</value>
+                <value>gjk</value>
+            </array>
+        </property>
+<!--        -->
+        <property name="set">
+            <array>
+                <value>abc</value>
+                <value>def</value>
+                <value>gjk</value>
+            </array>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="hello" value="hi"></entry>
+            </map>
+        </property>
+
+        <property name="properties">
+            <map>
+                <entry key="pro" value="orp"></entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
