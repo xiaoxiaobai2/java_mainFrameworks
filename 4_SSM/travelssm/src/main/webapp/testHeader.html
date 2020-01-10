@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+    $(function () {
+        //获取当前登录的用户
+        $.get("user/findLogin.do",{},function (data) {
+            var content = "欢迎回来," + data.name;
+            $("#span_username").html(content);
+        },"json");
+
+        //测试菜单栏是否正常加载
+        $("#test").click(function () {
+            alert("被点了");
+            $.get("category/findAll.do",{},function (catrgoryList) {
+                alert(catrgoryList[1].cname);
+            },"json");
+        });
+
+        //测试能否正常查询路线
+        $("#findRoute").click(function () {
+            alert("被点了");
+            var cid=5;
+            var currentPage=2;
+            var rname = "西安";
+            rname = window.decodeURIComponent(rname);
+            alert(rname);
+            $.get("route/findRoute.do",{cid:cid,currentPage:currentPage,rname:rname},function (pageBean) {
+                alert(pageBean.currentPage);
+            },"json");
+        });
+    });
+</script>
+<body>
+<div class="shortcut">
+    <!-- 未登录状态  -->
+    <div class="login_out">
+<!--        <a href="login.html">登录</a>-->
+<!--        <a href="register.html">注册</a>-->
+    </div>
+    <!-- 登录状态  -->
+    <div class="login">
+
+        <span id="span_username"></span><br>
+<!--        <a onclick="myFavorite()" class="collection">我的收藏</a>-->
+<!--        <a href="javascript:location.href='user/exit';">退出</a>-->
+    </div>
+    <button onclick="javascript:;" value="test" id="test">test</button>
+    <button onclick="javascript:;" value="test" id="findRoute">findRoute</button>
+</div>
+</body>
+</html>
